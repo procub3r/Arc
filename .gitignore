@@ -1,0 +1,5 @@
+.cache/
+bin/
+isoroot/
+arc.iso
+compile_commands.json
