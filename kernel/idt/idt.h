@@ -21,4 +21,8 @@ struct IdtRegister {
     uint64_t base_addr;
 } __attribute__((packed));
 
+// Located in idt.asm
+extern void load_idt(struct IdtRegister idtr);
+void InitIdt();
+
 #endif // IDT_H

@@ -9,3 +9,8 @@ static struct IdtRegister idtr = {
     .limit = sizeof(idt) - 1,
     .base_addr = (uint64_t)&idt
 };
+
+// Initialize IDT:
+void InitIdt() {
+    load_idt(idtr);
+}

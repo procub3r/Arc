@@ -2,6 +2,7 @@
 #include <stddef.h>
 #include "boot/stivale2.h"
 #include "boot/boot.h"
+#include "idt/idt.h"
 
 // Kernel's entry point:
 void kernel_main(struct stivale2_struct* stivale2_struct) {
@@ -22,6 +23,9 @@ void kernel_main(struct stivale2_struct* stivale2_struct) {
 
     // Print!
     term_write("Hello user. We have been expecting you...", 41);
+
+    // Initialize Interrupts:
+    InitIdt();
 
     // Hang after printing:
     for (;;) {
