@@ -15,9 +15,10 @@ XORRISO_FLAGS := \
 	$(ISOROOT)
 
 CC := cc
+AS := nasm
 LD := ld
 
-CFLAGS := -Wall -Wextra -O2 -pipe
+CFLAGS := -Wall -Wextra -O2 -pipe -g
 INTERNALCFLAGS := \
 	-std=gnu11 \
 	-ffreestanding \
@@ -30,6 +31,7 @@ INTERNALCFLAGS := \
 	-mno-sse2 \
 	-mno-red-zone \
 	-mcmodel=kernel \
+	-masm=intel \
 	-MMD
 
 LDFLAGS := 
@@ -39,9 +41,13 @@ INTERNALLDFLAGS := \
 	-zmax-page-size=0x1000 \
 	-static
 
+INTER_FOLDER = /tmp/arc_inter_files
+
 CFILES := $(shell find kernel/ -name "*.c")
-OBJFILES := $(addprefix /tmp/arc_inter_files/,$(CFILES:.c=.o))
+ASMFILES := $(shell find kernel/ -name "*.asm")
+OBJFILES := $(addprefix $(INTER_FOLDER)/,$(CFILES:.c=.o))
 HEADER_DEPS := $(OBJFILES:.o=.d)
+OBJFILES += $(addprefix $(INTER_FOLDER)/,$(ASMFILES:.asm=.asm.o))
 
 MAKE_DIR = @mkdir -p $(@D)
 
@@ -60,14 +66,22 @@ $(KERNEL): $(OBJFILES)
 	$(LD) $(LDFLAGS) $(INTERNALLDFLAGS) $(OBJFILES) -o $@
 
 -include $(HEADER_DEPS)
-/tmp/arc_inter_files/%.o: %.c
+$(INTER_FOLDER)/%.o: %.c
 	$(MAKE_DIR)
 	$(CC) $(CFLAGS) $(INTERNALCFLAGS) -c $< -o $@
+
+$(INTER_FOLDER)/%.asm.o: %.asm
+	$(MAKE_DIR)
+	$(AS) -g -felf64 $< -o $@
 
 # .PHONY rules:
 .PHONY: run
 run: $(ISOFILE)
 	qemu-system-x86_64 -cdrom $<
+
+.PHONY: debug
+debug: $(ISOFILE)
+	qemu-system-x86_64 -cdrom $< -d int -no-reboot -no-shutdown
 
 .PHONY: clean
 clean:

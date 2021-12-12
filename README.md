@@ -2,7 +2,10 @@
 I am developing this operating system as I explore the amazing world of osdev.
 
 ## Status
-Stivale2 Bare Bones tutorial complete!
+Interrupts implementation complete:
+- Installing ISRs
+- Loading IDT
+- Handling interrupts
 
 ## Note
 This is the main branch, and this is where you will find the latest stable commit that should build without any errors.  
