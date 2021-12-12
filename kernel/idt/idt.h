@@ -21,8 +21,12 @@ struct IdtRegister {
     uint64_t base_addr;
 } __attribute__((packed));
 
-// Located in idt.asm
-extern void load_idt(struct IdtRegister idtr);
+// Struct to interpret ISR params:
+struct IsrParams {
+    uint64_t interrupt_vector;
+    uint64_t error_code;
+} __attribute__((packed));
+
 void InitIdt();
 
 #endif // IDT_H
