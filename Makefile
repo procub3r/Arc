@@ -18,7 +18,7 @@ CC := cc
 AS := nasm
 LD := ld
 
-CFLAGS := -Wall -Wextra -O2 -pipe
+CFLAGS := -Wall -Wextra -O2 -pipe -g
 INTERNALCFLAGS := \
 	-std=gnu11 \
 	-ffreestanding \
@@ -71,12 +71,16 @@ $(INTER_FOLDER)/%.o: %.c
 
 $(INTER_FOLDER)/%.asm.o: %.asm
 	$(MAKE_DIR)
-	$(AS) -felf64 $< -o $@
+	$(AS) -g -felf64 $< -o $@
 
 # .PHONY rules:
 .PHONY: run
 run: $(ISOFILE)
 	qemu-system-x86_64 -cdrom $<
+
+.PHONY: debug
+debug: $(ISOFILE)
+	qemu-system-x86_64 -cdrom $< -d int -no-reboot -no-shutdown
 
 .PHONY: clean
 clean:
