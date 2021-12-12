@@ -21,7 +21,7 @@ void InitIO(struct stivale2_struct* stivale2_struct) {
     void* term_write_ptr = (void*)term_str_tag->term_write;
     term_write = term_write_ptr;
 
-    print("[KERNEL]: Initialized IO.\n");
+    print("[KERNEL]: Initialized IO. Welcome to Arc!\n");
 }
 
 static size_t strlen(const char* string) {

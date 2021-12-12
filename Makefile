@@ -31,6 +31,7 @@ INTERNALCFLAGS := \
 	-mno-sse2 \
 	-mno-red-zone \
 	-mcmodel=kernel \
+	-masm=intel \
 	-MMD
 
 LDFLAGS := 

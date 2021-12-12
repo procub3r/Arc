@@ -9,6 +9,9 @@ void kernel_main(struct stivale2_struct* stivale2_struct) {
     InitIO(stivale2_struct);
     InitIdt();
 
+    // Trigger int 0 for demo:
+    asm("int 0");
+
     // Hang indefinitely:
     for (;;) {
         asm("hlt");

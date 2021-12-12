@@ -1,7 +1,8 @@
 bits 64
+
 section .text
 
-; Defines ISRs for interrupts that
+; Define ISRs for interrupts that
 ; push an error code onto the stack:
 %macro DEF_ISR_ERR 1
     isr%1:
@@ -9,7 +10,7 @@ section .text
         jmp call_interrupt_handler
 %endmacro
 
-; Defines ISRs for interrupts that
+; Define ISRs for interrupts that
 ; do not push an error code:
 %macro DEF_ISR_NOERR 1
     isr%1:
@@ -18,11 +19,6 @@ section .text
         push qword 0 ; 0 = no error
         push qword %1 ; Push interrupt vector
         jmp call_interrupt_handler ; Call the interrupt handler
-%endmacro
-
-; "Puts" an ISR's pointer into the executable:
-%macro PUT_ISR 1
-    dq isr%1
 %endmacro
 
 ; Define all the ISRs:
@@ -59,15 +55,6 @@ DEF_ISR_NOERR 29
 DEF_ISR_ERR 30
 DEF_ISR_NOERR 31
 
-; Array of pointers to ISRs:
-global isr_pointers
-isr_pointers:
-    %assign i 0
-    %rep 32
-        PUT_ISR i
-    %assign i i+1
-    %endrep
-
 ; Calls the interrupt handler with the
 ; stack pointer as a parameter. This 
 ; gives the handler access to the error
@@ -89,3 +76,19 @@ load_idt:
     ; parameter in 64 bit System V ABI.
     lidt [rdi]
     ret
+
+section .data
+
+; "Put" an ISR's pointer into the executable:
+%macro PUT_ISR 1
+    dq isr%1
+%endmacro
+
+; Array of pointers to ISRs:
+global isr_pointers
+isr_pointers:
+    %assign i 0
+    %rep 32
+        PUT_ISR i
+    %assign i i+1
+    %endrep
