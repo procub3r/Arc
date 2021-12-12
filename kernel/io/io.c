@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <stdint.h>
 #include "../boot/boot.h"
 #include "io.h"
 
@@ -33,4 +34,20 @@ static size_t strlen(const char* string) {
 
 void print(const char* string) {
     term_write(string, strlen(string));
+}
+
+void print_hex(uint64_t number) {
+    char result[] = "0x0000000000000000";
+    int index = 17;
+    while (number != 0) {
+        int digit = number & 0xF;
+        if (digit < 10) {
+            result[index] = digit + 48;
+        } else {
+            result[index] = digit + 55;
+        }
+        number >>= 4;
+        index--;
+    }
+    print(result);
 }
