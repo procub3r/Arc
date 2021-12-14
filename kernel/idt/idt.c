@@ -81,11 +81,7 @@ void InitIdt() {
 }
 
 void interrupt_handler(struct IsrParams* isr_params) {
-    print("[Interrupt Handler]: Interrupt triggered.\n");
-    print("\tVector: ");
-    print_hex(isr_params->interrupt_vector);
-    print("\n");
-    print("\tInterrupt: ");
-    print(interrupt_names[isr_params->interrupt_vector]);
-    print("\n");
+    print("[Interrupt Handler]: Interrupt triggered:\n");
+    printf("\tVector: %x2\n", isr_params->interrupt_vector);
+    printf("\tInterrupt: %s\n", interrupt_names[isr_params->interrupt_vector]);
 }
