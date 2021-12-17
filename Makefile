@@ -85,4 +85,4 @@ debug: $(ISOFILE)
 
 .PHONY: clean
 clean:
-	rm -r $(ISOFILE) $(ISOROOT) bin/  $(OBJFILES) $(HEADER_DEPS)
+	rm -r $(ISOFILE) $(ISOROOT) $(INTER_FOLDER) bin/
